@@ -33,29 +33,17 @@ module FactoryBot
           Internal.register_trait(Trait.new(name, &block))
         end
 
-        def to_create(&block)
-          FactoryBot.to_create(&block)
-        end
-
-        def skip_create
-          FactoryBot.skip_create
-        end
-
-        def initialize_with(&block)
-          FactoryBot.initialize_with(&block)
-        end
-
         def self.run(block)
           new.instance_eval(&block)
         end
 
-        delegate :before, :after, :callback, to: :configuration
-
-        private
-
-        def configuration
-          Internal.configuration
-        end
+        delegate :before,
+                 :after,
+                 :callback,
+                 :to_create,
+                 :skip_create,
+                 :initialize_with,
+                 to: FactoryBot::Internal
       end
 
       class ModifyDSL
